@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#173f32">
+<title>WASL — La communauté avance ensemble</title>
+<style>
+:root {
+  --green:#173f32;
+  --green2:#315747;
+  --cream:#f5f1e8;
+  --sand:#c6ad7c;
+  --ink:#252c27;
+  --muted:#788078;
+  --white:#fff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--cream);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  padding-bottom:85px;
+}
+header{
+  background:var(--green);color:white;
+  padding:24px 20px 27px;border-radius:0 0 25px 25px;
+}
+.top{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:30px;font-weight:800;letter-spacing:2px}
+.tagline{font-size:12px;color:#d6cbb4;margin-top:3px}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:var(--sand);color:var(--green);
+  display:grid;place-items:center;font-weight:800;
+}
+.hero{margin-top:29px}
+.hero h1{font-size:27px;line-height:1.18;margin:0 0 10px}
+.hero p{font-size:14px;line-height:1.6;color:#e1e8df;margin:0}
+.search{
+  background:white;border-radius:13px;padding:14px;
+  display:flex;gap:10px;margin-top:22px;
+}
+.search input{
+  border:0;outline:0;width:100%;font-size:14px;
+}
+main{padding:22px 17px;max-width:650px;margin:auto}
+.section-head{
+  display:flex;justify-content:space-between;
+  align-items:center;margin:25px 0 14px;
+}
+h2{font-size:18px;margin:0}
+.small{font-size:12px;color:var(--muted)}
+.categories{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:9px;
+}
+.category{
+  background:white;border-radius:14px;padding:13px 4px;
+  text-align:center;border:1px solid #eee9de;
+  cursor:pointer;min-width:0;
+}
+.category .emoji{font-size:23px}
+.category span:last-child{
+  display:block;font-size:10px;font-weight:650;
+  margin-top:8px;line-height:1.3;
+}
+.banner{
+  background:#e7decb;border-radius:17px;padding:19px;
+  margin:24px 0;
+}
+.banner strong{font-size:17px;color:var(--green)}
+.banner p{font-size:13px;line-height:1.5;color:#5e645b}
+button{
+  border:0;cursor:pointer;font:inherit;
+}
+.primary{
+  background:var(--green);color:white;padding:12px 17px;
+  border-radius:10px;font-size:13px;font-weight:650;
+}
+.cards{display:grid;gap:12px}
+.card{
+  background:white;padding:15px;border-radius:15px;
+  border:1px solid #eee9de;
+}
+.card-top{display:flex;justify-content:space-between;gap:8px}
+.pill{
+  font-size:10px;padding:6px 9px;border-radius:20px;
+  background:#edf2eb;color:var(--green);font-weight:650;
+}
+.card h3{font-size:15px;margin:12px 0 6px}
+.card p{font-size:12px;line-height:1.5;color:var(--muted);margin:0}
+.card-foot{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:14px;font-size:11px;color:var(--muted);
+}
+.empty{display:none;text-align:center;color:var(--muted);padding:25px}
+nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:white;border-top:1px solid #eae6dc;
+  display:flex;justify-content:space-around;
+  padding:10px 3px calc(10px + env(safe-area-inset-bottom));
+  z-index:5;
+}
+nav button{
+  background:none;color:#858b83;font-size:10px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+nav button b{font-size:19px;font-weight:500}
+nav button.active{color:var(--green);font-weight:800}
+.page{display:none}
+.page.active{display:block}
+.modal{
+  display:none;position:fixed;inset:0;background:#0008;
+  z-index:10;align-items:flex-end;justify-content:center;
+}
+.modal.show{display:flex}
+.modal-content{
+  background:var(--cream);width:100%;max-width:550px;
+  padding:25px 20px 35px;border-radius:22px 22px 0 0;
+}
+.modal-content input,.modal-content textarea,
+.modal-content select{
+  width:100%;padding:13px;margin:7px 0 12px;
+  border:1px solid #ddd7ca;border-radius:10px;
+  background:white;font:inherit;
+}
+.modal-content textarea{min-height:90px}
+@media(min-width:600px){
+ main{padding-top:30px}
+ .categories{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="top">
+    <div>
+      <div class="logo">WASL.</div>
+      <div class="tagline">Le lien qui nous rassemble.</div>
+    </div>
+    <div class="avatar">W</div>
+  </div>
+  <div class="hero">
+    <h1>La communauté<br>avance ensemble.</h1>
+    <p>Trouvez des professionnels, des opportunités et des personnes prêtes à vous aider.</p>
+    <div class="search">
+      <span>⌕</span>
+      <input id="search" placeholder="Que recherchez-vous ?" oninput="filterCards()">
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="home" class="page active">
+  <div class="section-head">
+    <h2>Explorer WASL</h2>
+    <span class="small">Découvrir →</span>
+  </div>
+
+  <div class="categories">
+    <button class="category" onclick="showPage('jobs')">
+      <span class="emoji">💼</span><span>Emploi</span>
+    </button>
+    <button class="category" onclick="showPage('pros')">
+      <span class="emoji">🛠️</span><span>Professionnels</span>
+    </button>
+    <button class="category" onclick="showPage('ads')">
+      <span class="emoji">🛍️</span><span>Annonces</span>
+    </button>
+    <button class="category" onclick="showPage('help')">
+      <span class="emoji">🤝</span><span>Entraide</span>
+    </button>
+  </div>
+
+  <div class="banner">
+    <strong>Ensemble, nous allons plus loin.</strong>
+    <p>Une compétence à partager ? Un service à proposer ? Une personne à aider ? WASL vous met en relation.</p>
+    <button class="primary" onclick="openPublish()">Publier une annonce +</button>
+  </div>
+
+  <div class="section-head">
+    <h2>Les opportunités</h2>
+    <span class="small">À découvrir</span>
+  </div>
+  <div id="homeCards" class="cards"></div>
+</section>
+
+<section id="jobs" class="page">
+  <div class="section-head"><h2>Emploi & recrutement</h2></div>
+  <p class="small">Des opportunités professionnelles à découvrir.</p>
+  <div id="jobCards" class="cards"></div>
+</section>
+
+<section id="pros" class="page">
+  <div class="section-head"><h2>Professionnels</h2></div>
+  <p class="small">Découvrez les compétences de notre réseau.</p>
+  <div id="proCards" class="cards"></div>
+</section>
+
+<section id="ads" class="page">
+  <div class="section-head"><h2>Petites annonces</h2></div>
+  <p class="small">Acheter, vendre et échanger.</p>
+  <div id="adCards" class="cards"></div>
+</section>
+
+<section id="help" class="page">
+  <div class="section-head"><h2>Entraide & solidarité</h2></div>
+  <p class="small">La solidarité commence par un geste.</p>
+  <div id="helpCards" class="cards"></div>
+</section>
+
+<section id="profile" class="page">
+  <div class="section-head"><h2>Mon espace WASL</h2></div>
+  <div class="card">
+    <div class="avatar">W</div>
+    <h3>Bienvenue sur WASL</h3>
+    <p>Votre espace personnel vous permettra de gérer vos annonces, favoris et messages.</p>
+    <p style="margin-top:12px">Création du compte : prochaine étape.</p>
+  </div>
+</section>
+</main>
+
+<nav>
+  <button class="active" onclick="showPage('home',this)"><b>⌂</b>Accueil</button>
+  <button onclick="showPage('pros',this)"><b>⌕</b>Explorer</button>
+  <button onclick="openPublish()"><b>＋</b>Publier</button>
+  <button onclick="showPage('help',this)"><b>♡</b>Entraide</button>
+  <button onclick="showPage('profile',this)"><b>◉</b>Profil</button>
+</nav>
+
+<div class="modal" id="publishModal">
+  <div class="modal-content">
+    <div class="section-head">
+      <h2>Publier sur WASL</h2>
+      <button onclick="closePublish()">✕</button>
+    </div>
+    <label>Titre de votre annonce</label>
+    <input id="newTitle" placeholder="Ex. Plombier à Toulon">
+    <label>Catégorie</label>
+    <select id="newCategory">
+      <option value="pros">Professionnels</option>
+      <option value="jobs">Emploi</option>
+      <option value="ads">Petites annonces</option>
+      <option value="help">Entraide</option>
+    </select>
+    <label>Description</label>
+    <textarea id="newDescription" placeholder="Présentez votre annonce..."></textarea>
+    <button class="primary" style="width:100%" onclick="addListing()">Ajouter à la démonstration</button>
+    <p class="small">Cette première version est une démonstration locale.</p>
+  </div>
+</div>
+
+<script>
+const demo = [
+ {title:"Plombier — dépannage et rénovation",desc:"Interventions à Toulon et alentours.",city:"Toulon",type:"pros",tag:"Professionnel"},
+ {title:"Recherche de collaborateur BTP",desc:"Entreprise locale à la recherche d'un manœuvre.",city:"La Garde",type:"jobs",tag:"Emploi"},
+ {title:"Don de mobilier",desc:"Meuble en bon état à donner à une famille.",city:"Hyères",type:"help",tag:"Solidarité"},
+ {title:"Matériel informatique",desc:"Équipement disponible à la vente.",city:"Toulon",type:"ads",tag:"Annonce"}
+];
+
+function card(item){
+ return `<article class="card searchable">
+ <div class="card-top"><span class="pill">${item.tag}</span><span class="small">WASL</span></div>
+ <h3>${escapeHTML(item.title)}</h3>
+ <p>${escapeHTML(item.desc)}</p>
+ <div class="card-foot"><span>📍 ${escapeHTML(item.city||"France")}</span><span>Découvrir →</span></div>
+ </article>`;
+}
+function escapeHTML(s){
+ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function render(){
+ const targets={home:"homeCards",jobs:"jobCards",pros:"proCards",ads:"adCards",help:"helpCards"};
+ Object.entries(targets).forEach(([type,id])=>{
+  document.getElementById(id).innerHTML=demo
+   .filter(x=>type==="home"||x.type===type).map(card).join("");
+ });
+}
+function showPage(id,button){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+ if(button)button.classList.add("active");
+ else {
+  const index={home:0,pros:1,jobs:0,ads:0,help:3,profile:4}[id];
+  document.querySelectorAll("nav button")[index].classList.add("active");
+ }
+ window.scrollTo(0,0);
+}
+function filterCards(){
+ const q=document.getElementById("search").value.toLowerCase();
+ document.querySelectorAll(".searchable").forEach(c=>{
+  c.style.display=c.innerText.toLowerCase().includes(q)?"block":"none";
+ });
+}
+function openPublish(){document.getElementById("publishModal").classList.add("show")}
+function closePublish(){document.getElementById("publishModal").classList.remove("show")}
+function addListing(){
+ const title=document.getElementById("newTitle").value.trim();
+ const desc=document.getElementById("newDescription").value.trim();
+ const type=document.getElementById("newCategory").value;
+ if(!title||!desc){alert("Ajoutez un titre et une description.");return}
+ demo.unshift({title,desc,city:"À préciser",type,tag:{pros:"Professionnel",jobs:"Emploi",ads:"Annonce",help:"Solidarité"}[type]});
+ render();closePublish();
+ document.getElementById("newTitle").value="";
+ document.getElementById("newDescription").value="";
+ showPage(type);
+}
+render();
+</script>
+</body>
+</html>
